@@ -35,6 +35,7 @@ Additional notes
 - If your API request limit exceeds, you can generate and use a personal access token
   [here](https://github.com/settings/applications) and add
 `?access_token=<YOUR_ACCESS_TOKEN>` to the request URLs.
+- If you have any final comments about your result please let us know via final_notes.txt
 
 
 
