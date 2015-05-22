@@ -7,7 +7,6 @@ repository for 24 hours. The challenge usually takes about 3 hours.
 
 Steps
 -----
-
 1. Clone this repository. Use it as your working directory.
 2. Bootstrap a new Android app.
 3. Request the GitHub API to show [XING's public repositories][1] and parse the JSON
@@ -27,7 +26,6 @@ list. Check the [pagination documentation][2].
 
 Additional notes
 ----------------
-
 - Important for us is code efficiency, following of best practices & code readability.
 - Don't focus too much on the design.
 - We would prefer if you'd not use libraries for network and tasks
@@ -36,13 +34,12 @@ Additional notes
   [here](https://github.com/settings/applications) and add
 `?access_token=<YOUR_ACCESS_TOKEN>` to the request URLs.
 - If you have any final comments about your result please let us know via final_notes.txt
-
+- If you want to use different branches, please make sure that they'll be merged into master branch when you'll finish the task.
 
 
 Bonus points
 ------------
 - Provide a comprehensive git history.
-
 
   [1]: https://api.github.com/users/xing/repos
   [2]: https://developer.github.com/v3/#pagination
