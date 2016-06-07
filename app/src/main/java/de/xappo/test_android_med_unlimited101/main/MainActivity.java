@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import de.xappo.test_android_med_unlimited101.R;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
+    private static final String TAG = "MainActivity";
     private MainPresenter mMainPresenter;
     private List<Repository> mRepositories;
     @BindView(R.id.recyclerview)
@@ -32,9 +35,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mRecyclerView.setLayoutManager(layoutManager);
         mRepositories = new ArrayList<>();
 
-        mRepositories.add(new Repository("1", "a", "x"));
-        mRepositories.add(new Repository("2", "b", "y"));
-        mRepositories.add(new Repository("3", "c", "z"));
+        mRepositories.add(new Repository("1", "a", "x", "www.aaa.de"));
+        mRepositories.add(new Repository("2", "b", "y", "www.bbb.de"));
+        mRepositories.add(new Repository("3", "c", "z", "www.ccc.de"));
 
         mAdapter = new RepositoryAdapter(mRepositories);
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setItems(List<Repository> repositories) {
-        mRepositories .clear();
+        mRepositories.clear();
         mRepositories.addAll(repositories);
         mAdapter.notifyDataSetChanged();
     }
@@ -70,6 +73,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showDialogForRepository(int position) {
+
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        Toast.makeText(this, "Error sending request!", Toast.LENGTH_SHORT).show();
+        Log.e(TAG, "showError() Message: " + throwable.getMessage());
+
 
     }
 }
