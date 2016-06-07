@@ -12,4 +12,5 @@ public interface MainView {
 
     void showDialogForRepository(int position);
 
+    void showError(Throwable throwable);
 }

@@ -7,11 +7,13 @@ public class Repository {
     private String name;
     private String description;
     private String login;
+    private String html_url;
 
-    public Repository(String name, String description, String login) {
+    public Repository(String name, String description, String login, String html_url) {
         this.name = name;
         this.description = description;
         this.login = login;
+        this.html_url = html_url;
     }
 
     public String getName() {
@@ -38,12 +40,21 @@ public class Repository {
         this.login = login;
     }
 
+    public String getHtml_url() {
+        return html_url;
+    }
+
+    public void setHtml_url(String html_url) {
+        this.html_url = html_url;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", login='" + login + '\'' +
+                ", html_url='" + html_url + '\'' +
                 '}';
     }
 }

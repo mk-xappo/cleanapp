@@ -1,13 +1,17 @@
 package de.xappo.test_android_med_unlimited101.main;
 
 
+import android.app.Activity;
+import android.util.Log;
+
 import java.util.List;
 
 /**
  * Created by knoppik on 07.06.16.
  */
-public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInteractor.OnFinishedListener {
+public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInteractor.OnResponseListener {
 
+    private static final String TAG = "MainPresenterImpl";
     private MainView mMainView;
     private RequestRepositoriesInteractor mRequestRepositoriesInteractor;
 
@@ -22,7 +26,8 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
         if (mMainView != null) {
 
         }
-        mRequestRepositoriesInteractor.findRepositories(this);
+        Log.i(TAG, "onResume()");
+        mRequestRepositoriesInteractor.findRepositories((Activity) mMainView, this);
 
     }
 
@@ -44,5 +49,10 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
         if (mMainView != null) {
             mMainView.setItems(repositories);
         }
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        mMainView.showError(throwable);
     }
 }

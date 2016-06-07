@@ -1,5 +1,7 @@
 package de.xappo.test_android_med_unlimited101.main;
 
+import android.app.Activity;
+
 import java.util.List;
 
 /**
@@ -7,9 +9,10 @@ import java.util.List;
  */
 public interface RequestRepositoriesInteractor {
 
-    interface OnFinishedListener {
+    interface OnResponseListener {
         void onFinished(List<Repository> repositories);
+        void onError(Throwable throwable);
     }
 
-    void findRepositories(OnFinishedListener onFinishedListener);
+    void findRepositories(final Activity activity, final OnResponseListener onResponseListener);
 }
