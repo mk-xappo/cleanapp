@@ -1,11 +1,11 @@
 package de.xappo.test_android_med_unlimited101.main;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,11 +26,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
-
         mMainPresenter = new MainPresenterImpl(this);
-        mRepositories = Collections.emptyList();
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRepositories = new ArrayList<>();
+
+        mRepositories.add(new Repository("1", "a", "x"));
+        mRepositories.add(new Repository("2", "b", "y"));
+        mRepositories.add(new Repository("3", "c", "z"));
+
+        mAdapter = new RepositoryAdapter(mRepositories);
+
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
@@ -48,10 +57,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void setItems(List<Repository> repositories) {
-        mRepositories = repositories;
-
-        mAdapter = new RepositoryAdapter(repositories);
-        mRecyclerView.setAdapter(mAdapter);
+        mRepositories .clear();
+        mRepositories.addAll(repositories);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

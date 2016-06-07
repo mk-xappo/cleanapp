@@ -11,6 +11,7 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     private MainView mMainView;
     private RequestRepositoriesInteractor mRequestRepositoriesInteractor;
 
+
     public MainPresenterImpl(MainView mainView) {
         mMainView = mainView;
         mRequestRepositoriesInteractor = new RequestRepositoriesInteractorImpl();

@@ -17,6 +17,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         List<Repository> repositories = new ArrayList<Repository>();
         repositories.add(new Repository("repo1", "desc1", "login1"));
         repositories.add(new Repository("repo2", "desc2", "login2"));
+        repositories.add(new Repository("repo3", "desc3", "login3"));
         return repositories;
 
     }
