@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.xappo.test_android_med_unlimited101.R;
 import de.xappo.test_android_med_unlimited101.main.recyclerviewextensions.DividerItemDecoration;
+import de.xappo.test_android_med_unlimited101.main.recyclerviewextensions.EndlessRecyclerViewScrollListener;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         mMainPresenter = new MainPresenterImpl(this);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
@@ -44,21 +45,27 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         mRepositories = new ArrayList<>();
 
-        mRepositories.add(new Repository("1", "a", "x", "www.aaa.de", "www.aaa.owner.de", true));
-        mRepositories.add(new Repository("2", "b", "y", "www.bbb.de", "www.bbb.owner.de", true));
-        mRepositories.add(new Repository("3", "c", "z", "www.ccc.de", "www.ccc.owner.de", false));
-
         mAdapter = new RepositoryAdapter(this, mRepositories);
 
         mRecyclerView.setAdapter(mAdapter);
 
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                customLoadMoreDataFromApi();
+            }
+        });
+
+    }
+
+    private void customLoadMoreDataFromApi() {
+        mMainPresenter.onLoadMore();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mMainPresenter.onResume();
-
     }
 
     @Override
@@ -68,10 +75,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setItems(List<Repository> repositories) {
-        mRepositories.clear();
+    public void addItems(List<Repository> repositories) {
         mRepositories.addAll(repositories);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemRangeChanged(mAdapter.getItemCount(), mRepositories.size());
+
+//        mRepositories.clear();
+//        mRepositories.addAll(repositories);
+//        mAdapter.notifyDataSetChanged();
     }
 
     @Override

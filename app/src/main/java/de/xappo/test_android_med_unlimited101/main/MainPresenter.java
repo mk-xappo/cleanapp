@@ -7,6 +7,8 @@ public interface MainPresenter {
 
     void onResume();
 
+    void onLoadMore();
+
     void onItemClicked(int position);
 
     void onDestroy();

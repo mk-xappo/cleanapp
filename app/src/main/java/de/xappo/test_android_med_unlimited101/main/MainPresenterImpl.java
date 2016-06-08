@@ -32,6 +32,11 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     }
 
     @Override
+    public void onLoadMore() {
+        mRequestRepositoriesInteractor.findRepositories((Activity) mMainView, this);
+    }
+
+    @Override
     public void onItemClicked(int position) {
         if (mMainView != null) {
             mMainView.showDialogForRepository(position);
@@ -47,7 +52,7 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     @Override
     public void onFinished(List<Repository> repositories) {
         if (mMainView != null) {
-            mMainView.setItems(repositories);
+            mMainView.addItems(repositories);
         }
     }
 

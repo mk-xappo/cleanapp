@@ -41,6 +41,8 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
         holder.mTextViewLogin.setText(repository.getLogin());
         if (!repository.isFork()) {
             holder.mLinearLayout.setBackgroundColor(Color.LTGRAY);
+        } else {
+            holder.mLinearLayout.setBackgroundColor(Color.WHITE);
         }
     }
 

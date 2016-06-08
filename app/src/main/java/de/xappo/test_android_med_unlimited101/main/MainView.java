@@ -6,7 +6,7 @@ import java.util.List;
  * Created by knoppik on 07.06.16.
  */
 public interface MainView {
-    void setItems(List<Repository> repositories);
+    void addItems(List<Repository> repositories);
 
     List<Repository> getItems();
 

@@ -20,20 +20,29 @@ import java.util.List;
  */
 public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInteractor {
     private static final String TAG = "ReqRepositoriesIntImpl";
-    public static final String HTTPS_API_GITHUB_COM_USERS_XING_REPOS = "https://api.github.com/users/xing/repos";
+
+    public static final String URL_HTTPS_API_GITHUB_COM_USERS_XING_REPOS = "https://api.github.com/users/xing/repos";
+    public static final String URL_QUESTIONMARK = "?";
+    public static final String URL_AMPERSAND = "&";
+    public static final String URL_PARAM_KEY_PAGE = "page=";
+    public static final String URL_PARAM_KEY_PER_PAGE = "per_page=";
+    public static final int URL_PARAM_VALUE_PER_PAGE = 10;
+
 
     private Throwable mThrowable;
     private List<Repository> mRepositories;
+    private int mCurrentPage = 0;
 
     @Override
     public void findRepositories(final Activity activity, final OnResponseListener onResponseListener) {
         Log.i(TAG, "findRepositories()");
+        mCurrentPage++;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Log.i(TAG, "findRepositories() run()");
-                    mRepositories = getRepositories();
+                    mRepositories = getRepositories(mCurrentPage);
                     mThrowable = null;
                 } catch (JSONException e) {
                     mThrowable = e;
@@ -62,13 +71,10 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
                 }
             }
         });
-
-
-
     }
 
-    private List<Repository> getRepositories() throws JSONException, IOException, BufferedReaderNotClosedException {
-        JSONArray jsonArray = new JSONArray(requestRepositories());
+    private List<Repository> getRepositories(int page) throws JSONException, IOException, BufferedReaderNotClosedException {
+        JSONArray jsonArray = new JSONArray(requestRepositories(page));
         List<Repository> repositories = new ArrayList<>();
         Log.i(TAG, "mRepositories: " + repositories);
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -86,9 +92,10 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         return repositories;
     }
 
-    private String requestRepositories() throws IOException, BufferedReaderNotClosedException {
+    private String requestRepositories(int page) throws IOException, BufferedReaderNotClosedException {
         StringBuilder stringBuilder = new StringBuilder();
-        URL url = new URL(HTTPS_API_GITHUB_COM_USERS_XING_REPOS);
+        String urlStr = URL_HTTPS_API_GITHUB_COM_USERS_XING_REPOS + URL_QUESTIONMARK + URL_PARAM_KEY_PAGE + page + URL_AMPERSAND + URL_PARAM_KEY_PER_PAGE + URL_PARAM_VALUE_PER_PAGE;
+        URL url = new URL(urlStr);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         final int responseCode = httpURLConnection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -107,7 +114,6 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         httpURLConnection.disconnect();
         return stringBuilder.toString();
     }
-
 
 
 }
