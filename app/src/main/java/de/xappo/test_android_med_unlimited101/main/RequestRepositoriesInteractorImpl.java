@@ -75,10 +75,13 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             String name = jsonObject.getString("name");
             String description = jsonObject.getString("description");
+            String html_url = jsonObject.getString("html_url");
+            //FIXME: fork Flag doesn't seem to be missing, so no handling for this case was implemented, we shall maybe use Boolean instead of boolean
+            boolean fork = jsonObject.getBoolean("fork");
             JSONObject owner = jsonObject.getJSONObject("owner");
             String login = owner.getString("login");
-            String html_url = owner.getString("html_url");
-            repositories.add(new Repository(name, description, login, html_url));
+            String owner_html_url = owner.getString("html_url");
+            repositories.add(new Repository(name, description, login, html_url, owner_html_url, fork));
         }
         return repositories;
     }

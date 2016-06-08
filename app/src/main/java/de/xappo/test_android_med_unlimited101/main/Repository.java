@@ -8,12 +8,16 @@ public class Repository {
     private String description;
     private String login;
     private String html_url;
+    private String owner_html_url;
+    private boolean fork;
 
-    public Repository(String name, String description, String login, String html_url) {
+    public Repository(String name, String description, String login, String html_url, String owner_html_url, boolean fork) {
         this.name = name;
         this.description = description;
         this.login = login;
         this.html_url = html_url;
+        this.owner_html_url = owner_html_url;
+        this.fork = fork;
     }
 
     public String getName() {
@@ -48,6 +52,22 @@ public class Repository {
         this.html_url = html_url;
     }
 
+    public String getOwner_html_url() {
+        return owner_html_url;
+    }
+
+    public void setOwner_html_url(String owner_html_url) {
+        this.owner_html_url = owner_html_url;
+    }
+
+    public boolean isFork() {
+        return fork;
+    }
+
+    public void setFork(boolean fork) {
+        this.fork = fork;
+    }
+
     @Override
     public String toString() {
         return "Repository{" +
@@ -55,6 +75,8 @@ public class Repository {
                 ", description='" + description + '\'' +
                 ", login='" + login + '\'' +
                 ", html_url='" + html_url + '\'' +
+                ", owner_html_url='" + owner_html_url + '\'' +
+                ", fork=" + fork +
                 '}';
     }
 }
