@@ -19,10 +19,12 @@ import de.xappo.test_android_med_unlimited101.R;
  */
 public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.RepositoryViewHolder> {
 
-    private final MainPresenter mMainPresenter;
+    private final MainView mMainView;
+    private List<Repository> mRepositories;
 
-    public RepositoryAdapter(MainPresenter mainPresenter) {
-        mMainPresenter = mainPresenter;
+    public RepositoryAdapter(MainView mainView, List<Repository> repositories) {
+        mRepositories = repositories;
+        mMainView = mainView;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
 
     @Override
     public void onBindViewHolder(RepositoryViewHolder holder, int position) {
-        Repository repository = mMainPresenter.getRequestRepositoriesInteractor().getRepositories().get(position);
+        Repository repository = mRepositories.get(position);
         holder.mTextViewName.setText(repository.getName());
         holder.mTextViewDescription.setText(repository.getDescription());
         holder.mTextViewLogin.setText(repository.getLogin());
@@ -46,7 +48,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
 
     @Override
     public int getItemCount() {
-        return mMainPresenter.getRequestRepositoriesInteractor().getRepositories().size();
+        return mRepositories.size();
     }
 
 
@@ -66,8 +68,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
 
         @Override
         public boolean onLongClick(View v) {
-            mMainPresenter.onItemClicked(getLayoutPosition());
-
+            mMainView.showDialogForRepository(getLayoutPosition());
             return true;
         }
     }

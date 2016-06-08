@@ -21,10 +21,6 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
         mRequestRepositoriesInteractor = new RequestRepositoriesInteractorImpl();
     }
 
-    public RequestRepositoriesInteractor getRequestRepositoriesInteractor() {
-        return mRequestRepositoriesInteractor;
-    }
-
     @Override
     public void onResume() {
         if (mMainView != null) {
@@ -44,17 +40,13 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     public void onItemClicked(int position) {
         if (mMainView != null) {
             mMainView.showDialogForRepository(position);
+
         }
     }
 
     @Override
     public void onDestroy() {
         mMainView = null;
-    }
-
-    @Override
-    public void addItems(List<Repository> repositories) {
-        mRequestRepositoriesInteractor.getRepositories().addAll(repositories);
     }
 
     @Override

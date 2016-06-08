@@ -8,6 +8,8 @@ import java.util.List;
 public interface MainView {
     void addItems(List<Repository> repositories);
 
+    List<Repository> getItems();
+
     void showDialogForRepository(int position);
 
     void showError(Throwable throwable);

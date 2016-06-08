@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
     private MainPresenter mMainPresenter;
+    private List<Repository> mRepositories;
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -42,7 +43,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        mAdapter = new RepositoryAdapter(mMainPresenter);
+        mRepositories = new ArrayList<>();
+
+        mAdapter = new RepositoryAdapter(this, mRepositories);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -73,8 +76,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void addItems(List<Repository> repositories) {
-        mMainPresenter.addItems(repositories);
-        mAdapter.notifyItemRangeChanged(mAdapter.getItemCount(), repositories.size());
+        mRepositories.addAll(repositories);
+        mAdapter.notifyItemRangeChanged(mAdapter.getItemCount(), mRepositories.size());
+
+//        mRepositories.clear();
+//        mRepositories.addAll(repositories);
+//        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public List<Repository> getItems() {
+        return mRepositories;
     }
 
 
@@ -82,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void showDialogForRepository(int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final List<String> items = new ArrayList<>();
-        items.add(mMainPresenter.getRequestRepositoriesInteractor().getRepositories().get(position).getHtml_url());
-        items.add(mMainPresenter.getRequestRepositoriesInteractor().getRepositories().get(position).getOwner_html_url());
+        items.add(mRepositories.get(position).getHtml_url());
+        items.add(mRepositories.get(position).getOwner_html_url());
         CharSequence[] charSequences = items.toArray(new CharSequence[items.size()]);
 
         int checkedIten = -1;
@@ -92,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(items.get(which)));
+                Log.i(TAG, "showDialogForRepository() onClick() Repo: " + mRepositories.get(which).toString());
                 switch (which) {
                     case 0:
                         startActivity(browserIntent);
