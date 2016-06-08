@@ -15,4 +15,7 @@ public interface RequestRepositoriesInteractor {
     }
 
     void findRepositories(final Activity activity, final OnResponseListener onResponseListener);
+
+    List<Repository> getRepositories();
+
 }
