@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private static final String TAG = "MainActivity";
     private MainPresenter mMainPresenter;
+    //FIXME: Activity shall not hold the model
     private List<Repository> mRepositories;
     @BindView(R.id.recyclerview)
     RecyclerView mRecyclerView;
@@ -42,20 +43,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST);
         mRecyclerView.addItemDecoration(itemDecoration);
-
         mRepositories = new ArrayList<>();
-
         mAdapter = new RepositoryAdapter(this, mRepositories);
-
         mRecyclerView.setAdapter(mAdapter);
-
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 customLoadMoreDataFromApi();
             }
         });
-
     }
 
     private void customLoadMoreDataFromApi() {
@@ -78,17 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void addItems(List<Repository> repositories) {
         mRepositories.addAll(repositories);
         mAdapter.notifyItemRangeChanged(mAdapter.getItemCount(), mRepositories.size());
-
-//        mRepositories.clear();
-//        mRepositories.addAll(repositories);
-//        mAdapter.notifyDataSetChanged();
     }
-
-    @Override
-    public List<Repository> getItems() {
-        return mRepositories;
-    }
-
 
     @Override
     public void showDialogForRepository(int position) {
@@ -98,8 +84,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         items.add(mRepositories.get(position).getOwner_html_url());
         CharSequence[] charSequences = items.toArray(new CharSequence[items.size()]);
 
+        //FIXME: Extract constant
         int checkedIten = -1;
 
+        //FIXME: It is not a good user experience if he sees radio buttons because clicking on an item already triggers the intent
         builder.setSingleChoiceItems(charSequences, checkedIten, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

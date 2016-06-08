@@ -15,6 +15,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.xappo.test_android_med_unlimited101.main.exceptions.BufferedReaderNotClosedException;
+
 /**
  * Created by knoppik on 07.06.16.
  */
@@ -23,6 +25,8 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
 
     public static final String URL_HTTPS_API_GITHUB_COM_USERS_XING_REPOS = "https://api.github.com/users/xing/repos";
     public static final String URL_QUESTIONMARK = "?";
+    public static final String URL_PARAM_KEY_ACCESS_TOKEN = "access_token=";
+    public static final String URL_PARAM_VALUE_ACCESS_TOKEN = "4282103b6820b1295a9e20e2d3c07fe20bb6bfcf";
     public static final String URL_AMPERSAND = "&";
     public static final String URL_PARAM_KEY_PAGE = "page=";
     public static final String URL_PARAM_KEY_PER_PAGE = "per_page=";
@@ -32,6 +36,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
     private Throwable mThrowable;
     private List<Repository> mRepositories;
     private int mCurrentPage = 0;
+    private boolean mRequestCompleted;
 
     public RequestRepositoriesInteractorImpl() {
         mRepositories = new ArrayList<>();
@@ -41,8 +46,10 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         return mRepositories;
     }
 
+    //FIXME: May be better to pass the presenter instead of the activity
     @Override
     public void findRepositories(final Activity activity, final OnResponseListener onResponseListener) {
+        mRequestCompleted = false;
         Log.i(TAG, "findRepositories()");
         mCurrentPage++;
         new Thread(new Runnable() {
@@ -52,6 +59,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
                     Log.i(TAG, "findRepositories() run()");
                     mRepositories = getFormattedRepositories(mCurrentPage);
                     mThrowable = null;
+                    mRequestCompleted = true;
                 } catch (JSONException e) {
                     mThrowable = e;
                 } catch (IOException e) {
@@ -63,12 +71,12 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         }).start();
 
 
-        //TODO boolean-variable setzen, optional timeout. In while-Schleife checken und dann UI Thread feuern
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //FIXME: I don't like this, Using retrofit I wouldn't need this loop
+        do {
+            //FIXME: We could run into an endless loop. So we shall work with a timeout value
+        } while ((mRequestCompleted == false) && (mThrowable == null));
+
+
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -102,10 +110,12 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
 
     private String requestRepositories(int page) throws IOException, BufferedReaderNotClosedException {
         StringBuilder stringBuilder = new StringBuilder();
-        String urlStr = URL_HTTPS_API_GITHUB_COM_USERS_XING_REPOS + URL_QUESTIONMARK + URL_PARAM_KEY_PAGE + page + URL_AMPERSAND + URL_PARAM_KEY_PER_PAGE + URL_PARAM_VALUE_PER_PAGE;
+        String urlStr = URL_HTTPS_API_GITHUB_COM_USERS_XING_REPOS + URL_QUESTIONMARK + URL_PARAM_KEY_ACCESS_TOKEN + URL_PARAM_VALUE_ACCESS_TOKEN + URL_AMPERSAND +
+                URL_PARAM_KEY_PAGE + page + URL_AMPERSAND + URL_PARAM_KEY_PER_PAGE + URL_PARAM_VALUE_PER_PAGE;
         URL url = new URL(urlStr);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         final int responseCode = httpURLConnection.getResponseCode();
+        //FIXME: Handle other cases!
         if (responseCode == HttpURLConnection.HTTP_OK) {
             InputStreamReader inputStreamReader = new InputStreamReader(httpURLConnection.getInputStream());
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -113,6 +123,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
+            //FIXME: Try-With-Statement may have been better
             try {
                 bufferedReader.close();
             } catch (IOException e) {

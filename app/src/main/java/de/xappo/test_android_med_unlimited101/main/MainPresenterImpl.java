@@ -24,7 +24,7 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     @Override
     public void onResume() {
         if (mMainView != null) {
-
+            //FIXME: Wanted to use this but had no reasons
         }
         Log.i(TAG, "onResume()");
         mRequestRepositoriesInteractor.findRepositories((Activity) mMainView, this);
@@ -40,13 +40,13 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
     public void onItemClicked(int position) {
         if (mMainView != null) {
             mMainView.showDialogForRepository(position);
-
         }
     }
 
     @Override
     public void onDestroy() {
         mMainView = null;
+        //FIXME: Release Interactor
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Repository {
     private String login;
     private String html_url;
     private String owner_html_url;
+    //FIXME: Boolean may have been better
     private boolean fork;
 
     public Repository(String name, String description, String login, String html_url, String owner_html_url, boolean fork) {

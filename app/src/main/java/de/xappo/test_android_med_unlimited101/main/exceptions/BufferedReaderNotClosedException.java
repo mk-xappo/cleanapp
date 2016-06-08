@@ -1,4 +1,4 @@
-package de.xappo.test_android_med_unlimited101.main;
+package de.xappo.test_android_med_unlimited101.main.exceptions;
 
 import java.io.IOException;
 

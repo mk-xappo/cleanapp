@@ -9,6 +9,7 @@ public interface MainPresenter {
 
     void onLoadMore();
 
+    //FIXME: Unused
     void onItemClicked(int position);
 
     void onDestroy();

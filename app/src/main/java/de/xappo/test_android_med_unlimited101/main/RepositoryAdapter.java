@@ -29,6 +29,7 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
 
     @Override
     public RepositoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //FIXME: Get LayoutInflater in constructor and reuse
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.repository, parent, false);
         return new RepositoryViewHolder(view);
     }
@@ -50,7 +51,6 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Re
     public int getItemCount() {
         return mRepositories.size();
     }
-
 
     public class RepositoryViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
