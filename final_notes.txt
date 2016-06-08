@@ -1,10 +1,10 @@
 For all those things I didn’t have enough time:
 
--Check if changing the screen orientation is handled correctly
+-Check if changing the screen orientation is handled correctly, but I think it works
 -Write javadoc
 -Search for memory leaks
 -Implementing Tests
--Checking If Internet Connection is available and only then make requests
+-Checking If internet connection is available and only then make requests
 -Handling status different from HTTP_OK
 
 For all other issues look into the source code. I have marked import things I would improve by „FIXME“ annotations
