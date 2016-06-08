@@ -33,6 +33,14 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
     private List<Repository> mRepositories;
     private int mCurrentPage = 0;
 
+    public RequestRepositoriesInteractorImpl() {
+        mRepositories = new ArrayList<>();
+    }
+
+    public List<Repository> getRepositories() {
+        return mRepositories;
+    }
+
     @Override
     public void findRepositories(final Activity activity, final OnResponseListener onResponseListener) {
         Log.i(TAG, "findRepositories()");
@@ -42,7 +50,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
             public void run() {
                 try {
                     Log.i(TAG, "findRepositories() run()");
-                    mRepositories = getRepositories(mCurrentPage);
+                    mRepositories = getFormattedRepositories(mCurrentPage);
                     mThrowable = null;
                 } catch (JSONException e) {
                     mThrowable = e;
@@ -73,7 +81,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
         });
     }
 
-    private List<Repository> getRepositories(int page) throws JSONException, IOException, BufferedReaderNotClosedException {
+    private List<Repository> getFormattedRepositories(int page) throws JSONException, IOException, BufferedReaderNotClosedException {
         JSONArray jsonArray = new JSONArray(requestRepositories(page));
         List<Repository> repositories = new ArrayList<>();
         Log.i(TAG, "mRepositories: " + repositories);
