@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInteractor {
     private static final String TAG = "ReqRepositoriesIntImpl";
+    public static final String HTTPS_API_GITHUB_COM_USERS_XING_REPOS = "https://api.github.com/users/xing/repos";
 
     private Throwable mThrowable;
     private List<Repository> mRepositories;
@@ -44,6 +45,8 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
             }
         }).start();
 
+
+        //TODO boolean-variable setzen, optional timeout. In while-Schleife checken und dann UI Thread feuern
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
@@ -82,7 +85,7 @@ public class RequestRepositoriesInteractorImpl implements RequestRepositoriesInt
 
     private String requestRepositories() throws IOException, BufferedReaderNotClosedException {
         StringBuilder stringBuilder = new StringBuilder();
-        URL url = new URL("https://api.github.com/users/xing/repos");
+        URL url = new URL(HTTPS_API_GITHUB_COM_USERS_XING_REPOS);
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
         final int responseCode = httpURLConnection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
