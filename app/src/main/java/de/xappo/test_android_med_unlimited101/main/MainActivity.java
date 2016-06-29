@@ -2,6 +2,7 @@ package de.xappo.test_android_med_unlimited101.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -14,11 +15,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.xappo.test_android_med_unlimited101.R;
 import de.xappo.test_android_med_unlimited101.main.recyclerviewextensions.DividerItemDecoration;
 import de.xappo.test_android_med_unlimited101.main.recyclerviewextensions.EndlessRecyclerViewScrollListener;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -30,11 +34,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
     RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
 
+    @Inject SharedPreferences sharedPreferences;
+    @Inject Retrofit retrofit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        ((MyApp) getApplication()).getNetComponent().inject(this);
 
         mMainPresenter = new MainPresenterImpl(this);
 
@@ -121,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Toast.makeText(this, "Error sending request!", Toast.LENGTH_SHORT).show();
         Log.e(TAG, "showError() Message: " + throwable.getMessage());
     }
+
+
+
 
 
 }
