@@ -8,6 +8,7 @@ import dagger.Component;
 @Component(modules={AppModule.class, NetModule.class})
 public interface NetComponent {
     void inject(MainActivity activity);
+    void inject(MainPresenter mainPresenter);
     // void inject(MyFragment fragment);
     // void inject(MyService service);
 }

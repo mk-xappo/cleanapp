@@ -71,5 +71,12 @@ public class NetModule {
         return retrofit;
     }
 
+    @Provides
+    @Singleton
+    RequestRepositoriesInteractor provideRequestRepositoriesInteractor() {
+        RequestRepositoriesInteractor requestRepositoriesInteractor = new RequestRepositoriesInteractorImpl();
+        return requestRepositoriesInteractor;
+    }
+
 
 }

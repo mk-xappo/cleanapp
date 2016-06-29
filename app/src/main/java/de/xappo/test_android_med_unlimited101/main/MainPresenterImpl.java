@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by knoppik on 07.06.16.
  */
@@ -13,12 +15,14 @@ public class MainPresenterImpl implements MainPresenter, RequestRepositoriesInte
 
     private static final String TAG = "MainPresenterImpl";
     private MainView mMainView;
-    private RequestRepositoriesInteractor mRequestRepositoriesInteractor;
+    @Inject
+    RequestRepositoriesInteractor mRequestRepositoriesInteractor;
 
 
     public MainPresenterImpl(MainView mainView) {
         mMainView = mainView;
-        mRequestRepositoriesInteractor = new RequestRepositoriesInteractorImpl();
+        ((MyApp)((Activity) mainView).getApplication()).getNetComponent().inject(this);
+        //mRequestRepositoriesInteractor = new RequestRepositoriesInteractorImpl();
     }
 
     @Override
